@@ -20,18 +20,18 @@ function setup() {
     world = engine.world;
     ground1 = new Ground(600, height, 1200 ,20)
     ground2 = new Ground(900, height*7/8, 600, height/4);
-    polygon = Bodies.circle(150, 200, 20);
+    polygon = Bodies.circle(150, 200, 20, {'density' : 2.5});
     World.add(world, polygon);
-    slingshot1 = new Slingshot(polygon, {'x' : 150, 'y' : 200});
-    box1 = new Box(650, height*3/4 - 25, 50, 50, 255, 0, 0);
-    box2 = new Box(700, height*3/4 - 25, 50, 50, 0, 0, 255);
-    box3 = new Box(750, height*3/4 - 25, 50, 50, 0, 255, 0);
-    box4 = new Box(800, height*3/4 - 25, 50, 50, 0, 0, 255);
-    box5 = new Box(850, height*3/4 - 25, 50, 50, 255, 0, 0);
-    box6 = new Box(700, height*3/4 - 75, 50, 50, 255, 0, 0);
-    box7 = new Box(750, height*3/4 - 75, 50, 50, 0, 0, 255);
-    box8 = new Box(800, height*3/4 - 75, 50, 50, 255, 0, 0);
-    box9 = new Box(750, height*3/4 - 125, 50, 50, 255, 0, 0);
+    slingshot1 = new Slingshot(polygon, {'x' : 150, 'y' : 150});
+    box1 = new Box(650, height*3/4 - 25, 50, 50);
+    box2 = new Box(700, height*3/4 - 25, 50, 50);
+    box3 = new Box(750, height*3/4 - 25, 50, 50);
+    box4 = new Box(800, height*3/4 - 25, 50, 50);
+    box5 = new Box(850, height*3/4 - 25, 50, 50);
+    box6 = new Box(700, height*3/4 - 75, 50, 50);
+    box7 = new Box(750, height*3/4 - 75, 50, 50);
+    box8 = new Box(800, height*3/4 - 75, 50, 50);
+    box9 = new Box(750, height*3/4 - 125, 50, 50);
 }
 
 function mouseDragged() {
@@ -57,4 +57,15 @@ function draw() {
     if (drag) {
         Body.setPosition(polygon, {x : mouseX, y : mouseY});
     }
+    if (keyCode === 32) {
+        reset();
+        keyCode = 0;
+    }
+}
+
+function reset() {
+    slingshot1.flown = false;
+    slingshot1.chain.bodyA = polygon;
+    Body.setPosition(polygon, {'x' : 150, 'y' : 200});
+    Body.setVelocity(polygon, {'x' : 0, 'y' : 0});
 }
