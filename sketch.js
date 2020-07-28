@@ -80,7 +80,7 @@ function reset() {
 }
 
 async function getBackground() {
-    let Time = await fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
+    let Time = await fetch('https://worldtimeapi.org/api/timezone/Asia/Kolkata');
     let Response = await Time.json();
     if (Response.datetime.slice(11, 13) >= 7 && Response.datetime.slice(11, 13) <= 19) {
         backgroundC = 100;
