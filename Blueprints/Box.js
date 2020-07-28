@@ -1,7 +1,7 @@
 let allBoxes = [];
 class Box {
     constructor (x, y, width, height) {
-        this.visibility = 255;
+        this.visibility = 250;
         this.image = loadImage('box.png');
         this.width = width;
         this.height = height;
@@ -9,11 +9,12 @@ class Box {
         World.add(world, this.body);
         this.display = function () {
             push();
-            if (this.body.speed > 3) {
-                this.visibility -= 5;
-                World.remove(world, this.body);
-            }
             if (this.visibility > 0) {
+                if (this.body.speed > 3) {
+                    score += 2;
+                    this.visibility -= 5;
+                    World.remove(world, this.body);
+                }
                 tint(255, this.visibility);
                 translate(this.body.position.x, this.body.position.y);
                 rotate(this.body.angle);

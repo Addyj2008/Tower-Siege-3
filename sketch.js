@@ -5,7 +5,8 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
 let engine, world;
-let slingshot1, ground1, ground2, polygon, polygon_IMG, drag;
+let slingshot1, ground1, ground2, polygon, polygon_IMG;
+let score, drag, canDrag, backgroundC;
 let box1, box2, box3, box4, box5, box6, box7, box8, box9;
 
 function preload() {
@@ -15,6 +16,11 @@ function preload() {
 function setup() {
     createCanvas(1200,400);
     imageMode(CENTER);
+    fill(255, 255, 255);
+    backgroundC = 0;
+    getBackground();
+    score = 0;
+    canDrag = true;
     drag = false;
     engine = Engine.create();
     world = engine.world;
@@ -44,17 +50,19 @@ function mouseReleased() {
     if (drag) {
         slingshot1.fly();
         drag = false
+        canDrag = false;
     }
 }
 
 function draw() {
-    background(0, 0, 0);
+    background(0, 0, backgroundC);
     Engine.update(engine);
+    text("Score = " + score, 0, 15);
     image(polygon_IMG, polygon.position.x, polygon.position.y, 40, 40);
     displayAllBoxes();
     displayAllGrounds();
     slingshot1.display();
-    if (drag) {
+    if (drag && canDrag) {
         Body.setPosition(polygon, {x : mouseX, y : mouseY});
     }
     if (keyCode === 32) {
@@ -64,8 +72,19 @@ function draw() {
 }
 
 function reset() {
+    canDrag = true;
     slingshot1.flown = false;
     slingshot1.chain.bodyA = polygon;
     Body.setPosition(polygon, {'x' : 150, 'y' : 200});
     Body.setVelocity(polygon, {'x' : 0, 'y' : 0});
+}
+
+async function getBackground() {
+    let Time = await fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
+    let Response = await Time.json();
+    if (Response.datetime.slice(11, 13) >= 7 && Response.datetime.slice(11, 13) <= 19) {
+        backgroundC = 100;
+    } else {
+        backgroundC = 0;
+    }
 }
